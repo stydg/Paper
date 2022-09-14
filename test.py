@@ -31,7 +31,7 @@ def end():
         cv2.destroyAllWindows()
 
 
-img = cv2.imread("C:\img\paper\img6d.png",0)#   사용할 이미지 파일 흑백(0)
+img = cv2.imread("C:\img\paper\img4b.png",0)#   사용할 이미지 파일 흑백(0)
 rows, cols = img.shape
 
 flag = 0        # 스케일을 줄이고 키우고 줄이기 위한 플레그
@@ -39,8 +39,8 @@ scale = 1       # 초기값설정
 angle = 0       # 초기 0도
 while True:
 
-    MT = cv2.getRotationMatrix2D((cols / 2, rows / 2), angle, scale)
-    dst = cv2.warpAffine(img, MT, (cols, rows))
+    MT = cv2.getRotationMatrix2D((cols / 2, rows / 2), angle, scale) #어파인 핼렬 뱉음
+    dst = cv2.warpAffine(img, MT, (cols, rows)) #img를 어파인행렬대로 이미지 회전 변환 반환
     cv2.namedWindow("test1")
     cv2.moveWindow("test1", 800, 400)
     cv2.imshow('test1', dst)  # 이미지 출력
@@ -56,7 +56,7 @@ while True:
     c = ((M["m02"] / M["m00"]) - cY ** 2)
     print("a, b, c : ", a, b, c)
 
-    # theta = math.degrees((math.atan2(b,a-c)/2))
+    # theta = math.degrees((math.atan2(b,a-c)/2)) 이건 -pi/2 ~ pi/2
     theta = math.degrees(np.arctan2(b, (a - c)) / 2)
     w = (math.sqrt(6 * (a + c - math.sqrt(b ** 2 + (a - c) ** 2))))
     l = (math.sqrt(6 * (a + c + math.sqrt(b ** 2 + (a - c) ** 2))))
@@ -72,25 +72,26 @@ while True:
 
 
     result = np.zeros(dst.shape)
-
-
-    cv2.rectangle(result, (cX - int(l / 2), cY - int(w / 2)), (cX + int(l / 2), cY + int(w / 2)), 255, -1)
+    rot_rectangle = ((cX, cY), (l, w), theta)
+    box = cv2.boxPoints(rot_rectangle)
+    box = np.int0(box)  # Convert into integer values
+    rectangle = cv2.drawContours(result, [box], 0, (255, 255, 255), -1)
     cv2.circle(result, (cX, cY), 2, (0), -1)
     cv2.namedWindow("test2")
     cv2.moveWindow("test2", 900, 400)
-    cv2.imshow("test2", result) #각도 반영 안된 사각형
+    cv2.imshow("test2", rectangle) #각도 반영 안된 사각형
 
 
-    image = subimage(result, center=(cX, cY), theta=theta, width=w, height=l)
-
-
-    cv2.namedWindow("test3")
-    cv2.moveWindow("test3", 1000, 400)
-    cv2.imshow("test3", image)
+    # image = subimage(result, center=(cX, cY), theta=theta, width=w, height=l)
+    #
+    #
+    # cv2.namedWindow("test3")
+    # cv2.moveWindow("test3", 1000, 400)
+    # cv2.imshow("test3", image)
     cv2.waitKey(0)
 
     angle = angle + 10     # 각을 10도 씩 회전
-    if angle == 360:        # 0도~360도
+    if angle >= 360:        # 0도~360도
         angle = 0
 
     if cv2.waitKey(50) == 27:   #   esc 누르면 종료
