@@ -39,7 +39,7 @@ def compute_color_diff_img():
             if rate % 10 == 0:
                 print("Progress :", rate)
             curr_rate += 1
-    cv2.imwrite("result5a.png", stroke_area_img)
+    cv2.imwrite("result2.png", stroke_area_img)
     cv2.imshow("compute_color_diff_img", stroke_area_img)
     return stroke_area_img
 
@@ -113,7 +113,7 @@ def dider():
             #frame_counter += 1
     r2 = draw(p)
     r1[SIZE:h1 - SIZE, SIZE:w1 - SIZE] = r2
-    cv2.imwrite("distributin.png", r1)
+    cv2.imwrite("distributin2.png", r1)
     return r1
 
 def apply_rules(s):
@@ -152,7 +152,7 @@ def end():
         cv2.destroyAllWindows()
 
 #원본 이미지 로드
-img_source = cv2.imread("C:\img\paper\img8a.png", cv2.IMREAD_COLOR)
+img_source = cv2.imread("C:\img\paper\pet.png", cv2.IMREAD_COLOR)
 
 # BGR->CIE Luv로 변환
 source_luv = cv2.cvtColor(img_source, cv2.COLOR_LRGB2Luv)
@@ -162,5 +162,5 @@ h1, w1, depth1 = r1.shape
 r2 = r1[SIZE:h1-SIZE, SIZE:w1-SIZE]
 h, w, depth = r2.shape
 
-cv2.imshow("distribution", dider())
+cv2.imshow("distribution2", dider())
 end()

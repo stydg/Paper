@@ -31,7 +31,7 @@ def end():
         cv2.destroyAllWindows()
 
 
-img = cv2.imread("C:\img\paper\img4b.png",0)#   사용할 이미지 파일 흑백(0)
+img = cv2.imread("C:\img\paper\img6d.png",0)#   사용할 이미지 파일 흑백(0)
 rows, cols = img.shape
 
 flag = 0        # 스케일을 줄이고 키우고 줄이기 위한 플레그
